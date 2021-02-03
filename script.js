@@ -1,21 +1,26 @@
-console.log(cities);
-$('.ui.search')
-  .search({
-    type: 'category',
-    source: cities
-  })
-;
-
-
-
-
 window.onload = function() {
-    var searchInput = $("userInput");
-    $("#userInput").keyUp(function() {
-    const input = searchInput.value;
-    console.log(searchInput);
-    const suggestions = cities.filter(function(city){
-        return city.name.toLowerCase().startsWith(input);
-    });
-});
-};
+	$('#uiWrapper').search({
+		source: cities,
+		searchFields: [
+			'name'
+		],
+		fields : {
+	      title : 'name',
+	      description: 'state'
+	    },
+    	maxResults: 15,
+    	onSearchQuery: function(query){
+            $('#uiWrapper').addClass("loading");
+        },
+    	onResults: function (response){
+            $('#uiWrapper').removeClass("loading");
+        },
+        onSelect: function(result, response) {
+           console.log(result)
+           $('#uiWrapper').search('hide results');
+           $('#uiWrapper').removeClass("loading");
+           
+           return true;
+        },
+	});
+}
