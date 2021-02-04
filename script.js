@@ -61,6 +61,6 @@ function showForecast(result){
 
     //use result data to show current weather as well as
     $('#fore').text(result.city.name);
-    $('#fore').text(getWeather());
+    
 }
 

@@ -13,3 +13,25 @@ h1 {
 .sidebar {
   margin-top: 5%;
 }
+.marg {
+  margin-bottom: 20px;
+}
+#fore {
+  font-size: 25px;
+  background-color: lightgreen;
+  margin-left: 20px;
+  padding: 10px;
+}
+.currentWeather {
+  background-color: blue;
+  padding: 70px;
+  margin: 20px;
+}
+#historyItems {
+  background-color: red;
+  font-size: 20px;
+  padding: 30px;
+}
+.border {
+  border: solid black 10px;
+}
