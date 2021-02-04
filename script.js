@@ -39,9 +39,9 @@ window.onload = function() {
     });
 }
 
-//fetch weather from the API via CityID
+//fetch current weather from the API via CityID
 function getWeather(cityId){
-    let endpoint = 'https://api.openweathermap.org/data/2.5/forecast'
+    let endpoint = 'https://api.openweathermap.org/data/2.5/weather'
 	let apiKey = '3ad464391a8d3730b856f21a25189460'
     
 	$.ajax({
@@ -50,13 +50,30 @@ function getWeather(cityId){
 	    success: function(result){
 	    	addToHistory(result.city)
 	        showHistory();
-	        showForecast(result)
+	        showCurrentWeater(result)
+	    }
+	});
+
+	//now adding in the 5 day forecast
+	getForecast(cityId);
+}
+
+//fetch weather from the API via CityID
+function getForecast(cityId){
+    let endpoint = 'https://api.openweathermap.org/data/2.5/forecast'
+	let apiKey = '3ad464391a8d3730b856f21a25189460'
+    
+	$.ajax({
+		url: endpoint + "?id=" + cityId + "&APPID=" + apiKey,
+		dataType: 'jsonp',
+	    success: function(result){
+	    	showForecast(result)
 	    }
 	});
 }
 
-//show the forecast to the user
-function showForecast(result){
+//show the current to the user
+function showCurrentWeater(result){
 	console.log(result);
 
     //use result data to show current weather as well as
@@ -64,6 +81,18 @@ function showForecast(result){
 
     //update weather icon
     $("#currentWeatherIcon").attr("src", getWeatherIcon(result.list[0].weather[0].icon));
+    
+}
+
+//show the forecast to the user
+function showCurrentWeater(result){
+	console.log(result);
+
+    //use result data to show current weather as well as
+    //$('#fore').text(result.city.name);
+
+    //update weather icon
+    //$("#currentWeatherIcon").attr("src", getWeatherIcon(result.list[0].weather[0].icon));
     
 }
 
