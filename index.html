@@ -8,6 +8,8 @@
 	<link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
 
+    <script src="utils.js"></script>
+    <script src="history.js"></script>
     <script src="cities.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -28,7 +30,7 @@
 	<div class="ui container">
 		<div id="uiWrapper" class="ui search">
 			<div class="ui icon input">
-				<input class="prompt" type="text" placeholder="Search countries...">
+				<input id="userSearch" class="prompt" type="text" placeholder="Search countries...">
 				<i class="search icon"></i>
 			</div>
 			<div class="results"></div>
@@ -38,8 +40,6 @@
 	<div id="fore"></div>
 	<h1>History</h1>
 	<ul id="historyItems">
-		<li>Heber</li>
-		<li>Denver</li>
 	</ul>
 
 </body>

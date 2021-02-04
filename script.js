@@ -1,12 +1,12 @@
-Storage.prototype.setObj = function(key, obj) {
-return this.setItem(key, JSON.stringify(obj))
-}
-Storage.prototype.getObj = function(key) {
-return JSON.parse(this.getItem(key))
-}
+//windows onload
 window.onload = function() {
-   getHistory();
-    showHistory(history);
+	var history = getHistory();
+	showHistory(history);
+
+	//load our most recent search on page load
+	if (history.length > 0){
+		getWeather(history[0].id);
+	}
 
 	$('#uiWrapper').search({
 		source: cities,
@@ -25,63 +25,41 @@ window.onload = function() {
             $('#uiWrapper').removeClass("loading");
         },
         onSelect: function(result, response) {
-           console.log(result)
-           $('#uiWrapper').search('hide results');
-           $('#uiWrapper').removeClass("loading");
-           getWeather(result.id);
-           return true;
+        	//cleanup the UI
+			$('#uiWrapper').search('hide results');
+			$('#uiWrapper').removeClass("loading");
+			$('#uiWrapper').search("set value", "");
+			$('#uiWrapper').search("query");
+
+			//get the results from the API for this city
+			getWeather(result.id);
+
+			return true;
         },
     });
-    
 }
+
+//fetch weather from the API via CityID
 function getWeather(cityId){
-    console.log(cityId);
     let endpoint = 'https://api.openweathermap.org/data/2.5/forecast'
-let apiKey = '3ad464391a8d3730b856f21a25189460'
+	let apiKey = '3ad464391a8d3730b856f21a25189460'
     
-    
-
-$.ajax({
-url: endpoint + "?id=" + cityId + "&APPID=" + apiKey,
-
-dataType: 'jsonp',
-    success: function(result){
-        console.log(result);
-        history.push(result.city);
-       
-        setHistory();
-        history = JSON.parse(history);
-        showHistory(history);
-        showForecast(result)
-    }
-});
+	$.ajax({
+		url: endpoint + "?id=" + cityId + "&APPID=" + apiKey,
+		dataType: 'jsonp',
+	    success: function(result){
+	    	addToHistory(result.city)
+	        showHistory();
+	        showForecast(result)
+	    }
+	});
 }
 
-function showHistory(history){
-    //step 1 delete existing history html
-    $('#historyItems').empty();
-    //step 2 re-build history html based on history variable
-   console.log(history);
-    history.forEach(function(item){
-        console.log(item);
-        $('#historyItems').append('<li onclick="getWeather(' +  item.id + ')">' + item.name + '</li>');
-    })
-    //step 3 make sure each city shown has an onclick that fires getWeather with cityId
-    
-}
-
+//show the forecast to the user
 function showForecast(result){
+	console.log(result);
+
     //use result data to show current weather as well as
     $('fore').text(result);
 }
 
-function getHistory(){
-    var history = localStorage.getObj('history');
-    if (history === null){ history = []; }else{
-        history = JSON.parse(history);
-    }
-}
-
-function setHistory(){
-    localStorage.setObj('history');
-}
