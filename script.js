@@ -61,6 +61,13 @@ function showForecast(result){
 
     //use result data to show current weather as well as
     $('#fore').text(result.city.name);
+
+    //update weather icon
+    $("#currentWeatherIcon").attr("src", getWeatherIcon(result.list[0].weather[0].icon));
     
 }
 
+//get icon src based on icon value
+function getWeatherIcon(iconId){
+	return "http://openweathermap.org/img/wn/" + iconId + "@2x.png";
+}
