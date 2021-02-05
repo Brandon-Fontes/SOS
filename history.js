@@ -13,7 +13,7 @@ function showHistory(history){
 	if (history.length > 0){
 		history.forEach(function(item){
 		    $('#historyItems').append('<li style="cursor: pointer;" onclick="getWeather(' +  item.id + ')">' + item.name + '</li>');
-		})
+		});
 	}
 	//step 3 make sure each city shown has an onclick that fires getWeather with cityId
     

@@ -41,19 +41,23 @@ window.onload = function() {
 
 //fetch current weather from the API via CityID
 function getWeather(cityId){
-    let endpoint = 'https://api.openweathermap.org/data/2.5/weather'
+    let endpoint = 'https://api.openweathermap.org/data/2.5/onecall'
 	let apiKey = '3ad464391a8d3730b856f21a25189460'
-    
+
+   var city = getCityById(cityId);
+   addToHistory(city)
+   showHistory();
+
+
 	$.ajax({
-		url: endpoint + "?id=" + cityId + "&APPID=" + apiKey,
+		url: endpoint + "?lat=" + city.coord.lat + "&lon=" +city.coord.lon+ "&APPID=" + apiKey + '&units=imperial',
 		dataType: 'jsonp',
 	    success: function(result){
-	    	addToHistory(result.city)
-	        showHistory();
-	        showCurrentWeater(result)
+			showCurrentWeather(result, city)
+			
 	    }
 	});
-
+	
 	//now adding in the 5 day forecast
 	getForecast(cityId);
 }
@@ -73,21 +77,29 @@ function getForecast(cityId){
 }
 
 //show the current to the user
-function showCurrentWeater(result){
+function showCurrentWeather(result, city){
 	console.log(result);
 
     //use result data to show current weather as well as
-    $('#fore').text(result.city.name);
+     $('#fore').text(city.name);
 
     //update weather icon
-    $("#currentWeatherIcon").attr("src", getWeatherIcon(result.list[0].weather[0].icon));
-    
+     $("#currentWeatherIcon").attr("src", getWeatherIcon(result.current.weather[0].icon));
+	$('#temp').text('Temperature: ' + result.current.temp);
+	$('#windSpeed').text('Wind Speed: ' + result.current.wind_speed);
+	$('#humidity').text('Humidity: ' + result.current.humidity);
+	$('#uvIndex').text('Uv Index: ' + result.current.uvi);
 }
 
 //show the forecast to the user
-function showCurrentWeater(result){
+function showForecast(result){
 	console.log(result);
 
+
+	$('#temp5').text('Temperature: ' + result.daily[0].temp[0]);
+	$('#windSpeed').text('Wind Speed: ' + result.current.wind_speed);
+	$('#humidity').text('Humidity: ' + result.current.humidity);
+	$('#uvIndex').text('Uv Index: ' + result.current.uvi);
     //use result data to show current weather as well as
     //$('#fore').text(result.city.name);
 
@@ -99,4 +111,16 @@ function showCurrentWeater(result){
 //get icon src based on icon value
 function getWeatherIcon(iconId){
 	return "http://openweathermap.org/img/wn/" + iconId + "@2x.png";
+}
+
+function getCityById(cityId){
+	var returnCity = false;
+	cities.forEach(function(city){
+		
+		if(city.id == cityId){
+			returnCity = city;
+		}
+	})
+		return returnCity;
+	
 }
